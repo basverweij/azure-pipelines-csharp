@@ -1,0 +1,24 @@
+jobs:
+- job: TestWindows
+  pool:
+    vmImage: 'windows-latest'
+  strategy:
+    matrix:
+      Application:
+        projectName: AzurePipelines.Application.Tests
+      InfraEmit:
+        projectName: AzurePipelines.Infra.Emit.Tests
+  steps:
+  - task: UseDotNet@2
+    displayName: 'Use .NET Core 2.2 SDK'
+    inputs:
+      packageType: sdk
+      version: 2.2.x
+      installationPath: $(Agent.ToolsDirectory)/dotnet
+
+  - task: DotNetCoreCLI@2
+    displayName: 'Test $(projectName)'
+    inputs:
+      command: test
+      arguments: '/p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:CoverletOutput=$(Build.SourcesDirectory)/coverage/$(projectName).opencover.xml test/$(projectName)/$(projectName).csproj'
+      publishTestResults: true
