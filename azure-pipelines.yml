@@ -37,6 +37,8 @@ jobs:
   - task: DownloadPipelineArtifact@1
     inputs:
       downloadPath: '$(Agent.TempDirectory)/TestResults'
+  
+  - script: dir '$(Agent.TempDirectory)/TestResults'
 
   - task: SonarCloudPrepare@1
     displayName: 'Prepare Code Analysis'
