@@ -50,8 +50,8 @@ jobs:
   
   - task: SonarCloudAnalyze@1
     displayName: 'Run Code Analysis'
-    inputs: {}
+
+  - task: DownloadPipelineArtifact@1
 
   - task: SonarCloudPublish@1
     displayName: 'Publish Code Analysis'
-    inputs: {}
