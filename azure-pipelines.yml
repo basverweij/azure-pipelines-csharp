@@ -38,7 +38,7 @@ jobs:
     inputs:
       downloadPath: '$(Agent.TempDirectory)/TestResults'
   
-  - script: dir '$(Agent.TempDirectory)/TestResults'
+  - script: 'dir /s $(Agent.TempDirectory)\TestResults'
 
   - task: SonarCloudPrepare@1
     displayName: 'Prepare Code Analysis'
@@ -47,7 +47,7 @@ jobs:
       organization: 'basverweij-github'
       projectKey: 'basverweij_azure-pipelines-csharp'
       projectName: 'Azure Pipelines CSharp'
-      extraProperties: 'sonar.cs.opencover.reportsPaths=$(Agent.TempDirectory)/TestResults/*.opencover.xml'
+      extraProperties: 'sonar.cs.opencover.reportsPaths=$(Agent.TempDirectory)/TestResults/**/*.opencover.xml sonar.cs.vstest.reportsPaths=sonar.cs.opencover.reportsPaths=$(Agent.TempDirectory)/TestResults/**/*.trx'
 
   - task: DotNetCoreCLI@2
     displayName: 'Build Solution'
