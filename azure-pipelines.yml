@@ -20,10 +20,10 @@ jobs:
     displayName: 'Test $(projectName)'
     inputs:
       command: test
-      arguments: '/p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:CoverletOutput=$(Build.SourcesDirectory)/coverage/$(projectName).opencover.xml test/$(projectName)/$(projectName).csproj'
+      arguments: '--logger "trx;LogFileName=$(Agent.TempDirectory)/TestResults/$(projectName).trx" /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:CoverletOutput=$(Agent.TempDirectory)/TestResults/$(projectName).opencover.xml test/$(projectName)/$(projectName).csproj'
       publishTestResults: true
 
   - task: PublishPipelineArtifact@0
     inputs:
-      artifactName: 'TestWindows-Results-$(projectName)'
-      targetPath: '$(Agent.TempDirectory)/**/*.trx'
+      artifactName: 'TestWindows-TestResults-$(projectName)'
+      targetPath: '$(Agent.TempDirectory)/TestResults'
