@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFrameworks>netcoreapp2.2;net461</TargetFrameworks>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AzurePipelines.Application\AzurePipelines.Application.csproj" />
+    <ProjectReference Include="..\AzurePipelines.Infra.Emit\AzurePipelines.Infra.Emit.csproj" />
+  </ItemGroup>
+
+</Project>
