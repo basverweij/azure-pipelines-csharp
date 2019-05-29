@@ -26,5 +26,32 @@ jobs:
 
   - task: PublishPipelineArtifact@0
     inputs:
-      artifactName: 'TestWindows-TestResults-$(projectName)'
+      artifactName: 'TestWindows-TestResults-$(projectName)-$(framework)'
       targetPath: '$(Agent.TempDirectory)/TestResults'
+
+- job: Quality
+  dependsOn: [ TestWindows ]
+  pool:
+    vmImage: 'windows-2019'
+  steps:
+  - task: SonarCloudPrepare@1
+    displayName: 'Prepare Code Analysis'
+    inputs:
+      SonarCloud: 'SonarCloud'
+      organization: 'basverweij'
+      projectKey: 'basverweij_azure-pipelines-csharp'
+      projectName: 'Azure Pipelines CSharp'
+  
+  - task: DotNetCoreCLI@2
+    displayName: 'Build Solution'
+    inputs:
+      command: build
+      arguments: '--configuration Debug'
+  
+  - task: SonarCloudAnalyze@1
+    displayName: 'Run Code Analysis'
+    inputs: {}
+
+  - task: SonarCloudPublish@1
+    displayName: 'Publish Code Analysis'
+    inputs: {}
