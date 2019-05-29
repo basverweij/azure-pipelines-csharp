@@ -47,7 +47,9 @@ jobs:
       organization: 'basverweij-github'
       projectKey: 'basverweij_azure-pipelines-csharp'
       projectName: 'Azure Pipelines CSharp'
-      extraProperties: 'sonar.cs.opencover.reportsPaths=$(Agent.TempDirectory)/TestResults/**/*.opencover.xml sonar.cs.vstest.reportsPaths=sonar.cs.opencover.reportsPaths=$(Agent.TempDirectory)/TestResults/**/*.trx'
+      extraProperties: |
+        sonar.cs.opencover.reportsPaths=$(Agent.TempDirectory)/TestResults/**/*.opencover.xml
+        sonar.cs.vstest.reportsPaths=$(Agent.TempDirectory)/TestResults/**/*.trx
 
   - task: DotNetCoreCLI@2
     displayName: 'Build Solution'
@@ -64,7 +66,7 @@ jobs:
   - task: Palmmedia.reportgenerator.reportgenerator-build-release-task.reportgenerator@4
     displayName: ReportGenerator
     inputs:     
-      reports: '$(Agent.TempDirectory)/TestResults/*.opencover.xml'
+      reports: '$(Agent.TempDirectory)/TestResults/**/*.opencover.xml'
       targetdir: '$(Agent.TempDirectory)/Reports'
       reporttypes: 'HtmlInline_AzurePipelines;Cobertura;Badges'
       assemblyfilters: '-nunit*'
