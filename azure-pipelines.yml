@@ -38,7 +38,7 @@ jobs:
     displayName: 'Prepare Code Analysis'
     inputs:
       SonarCloud: 'SonarCloud'
-      organization: 'basverweij'
+      organization: 'basverweij-github'
       projectKey: 'basverweij_azure-pipelines-csharp'
       projectName: 'Azure Pipelines CSharp'
   
