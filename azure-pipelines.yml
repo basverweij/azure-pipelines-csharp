@@ -4,23 +4,24 @@ jobs:
     vmImage: 'windows-2019'
   strategy:
     matrix:
-      Application:
+      Application_netcoreapp2.2:
         projectName: AzurePipelines.Application.Tests
-      InfraEmit:
+        framework: netcoreapp2.2
+      Application_net461:
+        projectName: AzurePipelines.Application.Tests
+        framework: net461
+      InfraEmit_netcoreapp2.2:
         projectName: AzurePipelines.Infra.Emit.Tests
+        framework: netcoreapp2.2
+      InfraEmit_net461:
+        projectName: AzurePipelines.Infra.Emit.Tests
+        framework: net461
   steps:
-#  - task: UseDotNet@2
-#    displayName: 'Use .NET Core 2.2 SDK'
-#    inputs:
-#      packageType: sdk
-#      version: 2.2.x
-#      installationPath: $(Agent.ToolsDirectory)/dotnet
-
   - task: DotNetCoreCLI@2
     displayName: 'Test $(projectName)'
     inputs:
       command: test
-      arguments: '--logger "trx;LogFileName=$(Agent.TempDirectory)/TestResults/$(projectName).trx" /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:CoverletOutput=$(Agent.TempDirectory)/TestResults/$(projectName).opencover.xml test/$(projectName)/$(projectName).csproj'
+      arguments: '--framework $(framework) --logger "trx;LogFileName=$(Agent.TempDirectory)/TestResults/$(projectName)-$(framework).trx" /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:CoverletOutput=$(Agent.TempDirectory)/TestResults/$(projectName)-$(framework).opencover.xml test/$(projectName)/$(projectName).csproj'
       publishTestResults: true
 
   - task: PublishPipelineArtifact@0
