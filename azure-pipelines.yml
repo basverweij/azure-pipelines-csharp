@@ -73,6 +73,6 @@ jobs:
 
   - task: PublishCodeCoverageResults@1
     inputs:
-      summaryFileLocation: '$(Agent.TempDirectory)/Reports/Cobertura/Cobertura.xml'
-      reportDirectory: '$(Agent.TempDirectory)/Reports/Cobertura'
+      summaryFileLocation: '$(Agent.TempDirectory)/Reports/Cobertura.xml'
+      reportDirectory: '$(Agent.TempDirectory)/Reports'
       codecoverageTool: cobertura
