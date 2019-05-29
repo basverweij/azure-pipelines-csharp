@@ -41,7 +41,8 @@ jobs:
       organization: 'basverweij-github'
       projectKey: 'basverweij_azure-pipelines-csharp'
       projectName: 'Azure Pipelines CSharp'
-  
+      extraProperties: 'sonar.cs.opencover.reportsPaths=$(Agent.TempDirectory)/TestResults/*.opencover.xml'
+
   - task: DotNetCoreCLI@2
     displayName: 'Build Solution'
     inputs:
@@ -52,6 +53,8 @@ jobs:
     displayName: 'Run Code Analysis'
 
   - task: DownloadPipelineArtifact@1
+    inputs:
+      downloadPath: '$(Agent.TempDirectory)/TestResults'
 
   - task: SonarCloudPublish@1
     displayName: 'Publish Code Analysis'
