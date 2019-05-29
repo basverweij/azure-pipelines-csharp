@@ -34,6 +34,10 @@ jobs:
   pool:
     vmImage: 'windows-2019'
   steps:
+  - task: DownloadPipelineArtifact@1
+    inputs:
+      downloadPath: '$(Agent.TempDirectory)/TestResults'
+
   - task: SonarCloudPrepare@1
     displayName: 'Prepare Code Analysis'
     inputs:
@@ -52,9 +56,19 @@ jobs:
   - task: SonarCloudAnalyze@1
     displayName: 'Run Code Analysis'
 
-  - task: DownloadPipelineArtifact@1
-    inputs:
-      downloadPath: '$(Agent.TempDirectory)/TestResults'
-
   - task: SonarCloudPublish@1
     displayName: 'Publish Code Analysis'
+
+  - task: Palmmedia.reportgenerator.reportgenerator-build-release-task.reportgenerator@4
+    displayName: ReportGenerator
+    inputs:     
+      reports: '$(Agent.TempDirectory)/TestResults/*.opencover.xml'
+      targetdir: '$(Agent.TempDirectory)/Reports'
+      reporttypes: 'HtmlInline_AzurePipelines;Cobertura;Badges'
+      assemblyfilters: '-nunit*'
+
+  - task: PublishCodeCoverageResults@1
+    inputs:
+      summaryFileLocation: '$(Agent.TempDirectory)/Reports/Cobertura/Cobertura.xml'
+      reportDirectory: '$(Agent.TempDirectory)/Reports/Cobertura'
+      codecoverageTool: cobertura
